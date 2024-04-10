@@ -1,21 +1,49 @@
 <template>
-  <div class="homepage">
-    <section class="intro">
-      <h1>Get the latest tech news</h1>
-    </section>
-    <PostList :posts="loadedPosts" />
+  <div>
+    <nuxt-link :to="postLink">
+      <article class="post-preview">
+        <div
+          class="post-thumbnail"
+          :style="{
+            backgroundImage: 'url(' + thumbNail + ')',
+          }"
+        ></div>
+        <div class="post-content">
+          <h1>{{ title }}</h1>
+          <p>{{ previewText }}</p>
+        </div>
+      </article>
+    </nuxt-link>
   </div>
 </template>
-
 <script>
-import PostList from "../components/Posts/PostList.vue";
 export default {
-  components: {
-    PostList,
+  name: "PostPreview",
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    previewText: {
+      type: String,
+      required: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+    },
+    thumbNail: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
-    loadedPosts() {
-      return this.$store.getters.loadedPosts;
+    postLink() {
+      return this.isAdmin ? "/admin/" + this.id : "/posts/" + this.id;
     },
   },
 };
@@ -29,7 +57,6 @@ export default {
   box-sizing: border-box;
   background-position: center;
   background-size: cover;
-  background-image: url("~assets/images/main-page-background.jpg");
 }
 
 .intro h1 {

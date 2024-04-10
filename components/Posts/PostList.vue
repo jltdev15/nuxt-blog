@@ -1,27 +1,40 @@
 <template>
-  <div class="homepage">
-    <section class="intro">
-      <h1>Get the latest tech news</h1>
-    </section>
-    <PostList :posts="loadedPosts" />
-  </div>
+  <section class="post-list">
+    <PostPreview
+      v-for="post in posts"
+      :key="post.id"
+      :id="post.id"
+      :is-admin="isAdmin"
+      :title="post.title"
+      :previewText="post.previewText"
+      :thumbNail="post.thumbNail"
+    />
+  </section>
 </template>
-
 <script>
-import PostList from "../components/Posts/PostList.vue";
+import PostPreview from "../../components/Posts/PostPreview.vue";
 export default {
   components: {
-    PostList,
+    PostPreview,
   },
-  computed: {
-    loadedPosts() {
-      return this.$store.getters.loadedPosts;
+  props: {
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    posts: {
+      type: Array,
+      required: true,
     },
   },
 };
 </script>
-
 <style scoped>
+.posts-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .intro {
   height: 300px;
   position: relative;
@@ -53,7 +66,7 @@ export default {
   }
 }
 
-.featured-posts {
+.post-list {
   display: flex;
   padding: 20px;
   box-sizing: border-box;
